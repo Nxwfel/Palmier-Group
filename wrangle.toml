@@ -1,0 +1,14 @@
+project = "Palmier Group"
+version = "0.1.0"
+authors = ["<your-name> <you@example.com>"]
+description = "Wrangle configuration for the Palmier Group project"
+license = "MIT"
+
+[wrangle]
+# List of rule files (relative paths)
+rules = ["wrangle_rules.toml"]
+# Output directory for processed assets
+output = "wrangled/"
+
+# Optional: enable debug logging
+debug = false
