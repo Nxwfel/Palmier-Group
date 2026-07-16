@@ -21,40 +21,6 @@
   pointer-events: none;
 }
 
-.bg-blob {
-  position: absolute;
-  filter: blur(100px);
-  border-radius: 50%;
-  opacity: 0.4;
-  animation: float 10s infinite ease-in-out alternate;
-}
-
-.blob-1 {
-  width: 60vw;
-  height: 60vw;
-  background: #008f68; /* Cold Green */
-  top: -20vw;
-  left: -20vw;
-  animation-delay: -2s;
-}
-
-.blob-2 {
-  width: 50vw;
-  height: 50vw;
-  background: #b37d00; /* Darker Amber */
-  bottom: -20vw;
-  right: -10vw;
-}
-
-@keyframes float {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    transform: translate(5%, 10%) scale(1.1);
-  }
-}
-
 /* Carousel */
 .carousel-wrapper {
   position: relative;
@@ -75,41 +41,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.nav-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 10;
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
-  position: absolute;
-}
-
-.nav-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
-.nav-btn svg {
-  width: 24px;
-  height: 24px;
-}
-
-.prev-btn {
-  left: 5%;
-}
-
-.next-btn {
-  right: 5%;
 }
 
 /* Cards */

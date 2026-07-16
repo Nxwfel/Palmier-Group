@@ -1,4 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient'
+import * as reactSpring from '@react-spring/three'
+import * as drei from '@react-three/drei'
+import * as fiber from '@react-three/fiber'
+import { motion } from 'framer-motion'
 import './App.css'
 
 const websites = [
@@ -64,16 +69,90 @@ function App() {
     setActiveIndex(index);
   };
 
+  // Auto-play interval
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleDragEnd = (event, info) => {
+    // If the user drags significantly to the left or right, change slide
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold) {
+      nextSlide();
+    } else if (info.offset.x > swipeThreshold) {
+      prevSlide();
+    }
+  };
+
   return (
     <div className="app-container">
-      <div className="carousel-wrapper">
-        <button className="nav-btn prev-btn" onClick={prevSlide}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+      <div className="background-effects">
+        <ShaderGradientCanvas
+          importedFiber={{ ...fiber, ...drei, ...reactSpring }}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+          }}
+        >
+          <ShaderGradient
+            animate="on"
+            axesHelper="off"
+            brightness={1.2}
+            cAzimuthAngle={170}
+            cDistance={6.7}
+            cPolarAngle={70}
+            cameraZoom={1}
+            color1="#94ffd1"
+            color2="#6bf5ff"
+            color3="#ffffff"
+            destination="onCanvas"
+            embedMode="off"
+            envPreset="city"
+            format="gif"
+            fov={45}
+            frameRate={10}
+            gizmoHelper="hide"
+            grain="off"
+            lightType="3d"
+            pixelDensity={1}
+            positionX={0}
+            positionY={0.9}
+            positionZ={-0.3}
+            range="disabled"
+            rangeEnd={40}
+            rangeStart={0}
+            reflection={0.1}
+            rotationX={45}
+            rotationY={0}
+            rotationZ={0}
+            shader="defaults"
+            type="waterPlane"
+            uAmplitude={0}
+            uDensity={1.2}
+            uFrequency={0}
+            uSpeed={0.2}
+            uStrength={3.4}
+            uTime={0}
+            wireframe={false}
+          />
+        </ShaderGradientCanvas>
+      </div>
 
-        <div className="carousel">
+      <div className="carousel-wrapper">
+        <motion.div 
+          className="carousel"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={handleDragEnd}
+        >
           {websites.map((site, index) => {
             let position = 'hidden';
             if (index === activeIndex) {
@@ -85,10 +164,11 @@ function App() {
             }
 
             return (
-              <div
+              <motion.div
                 key={site.id}
                 className={`card ${position}`}
                 onClick={() => goToSlide(index)}
+                whileTap={{ scale: 0.95 }}
               >
                 <div className="card-header">
                   <div className="header-icon">
@@ -134,21 +214,10 @@ function App() {
                     {site.buttonText}
                   </a>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
-
-        <button className="nav-btn next-btn" onClick={nextSlide}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-      
-      <div className="background-effects">
-        <div className="bg-blob blob-1"></div>
-        <div className="bg-blob blob-2"></div>
+        </motion.div>
       </div>
     </div>
   )
