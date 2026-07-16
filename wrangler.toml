@@ -1,7 +1,3 @@
 name = "palmier-group"
 compatibility_date = "2026-07-16"
-
-[build]
-command = "npm run build"
-
- directory = "."
+pages_build_output_dir = "dist"
