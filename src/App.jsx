@@ -69,16 +69,19 @@ function App() {
     setActiveIndex(index);
   };
 
+  const [isHovered, setIsHovered] = useState(false);
+
   // Auto-play interval
   useEffect(() => {
+    if (isHovered) return;
     const interval = setInterval(() => {
       nextSlide();
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [activeIndex, isHovered]);
 
-  const handleDragEnd = (event, info) => {
-    // If the user drags significantly to the left or right, change slide
+  const handlePanEnd = (event, info) => {
+    // Detect swipe left or right
     const swipeThreshold = 50;
     if (info.offset.x < -swipeThreshold) {
       nextSlide();
@@ -109,9 +112,9 @@ function App() {
             cDistance={6.7}
             cPolarAngle={70}
             cameraZoom={1}
-            color1="#94ffd1"
-            color2="#6bf5ff"
-            color3="#ffffff"
+            color1="#008f68"
+            color2="#b37d00"
+            color3="#0b1110"
             destination="onCanvas"
             embedMode="off"
             envPreset="city"
@@ -148,10 +151,10 @@ function App() {
       <div className="carousel-wrapper">
         <motion.div 
           className="carousel"
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragEnd={handleDragEnd}
+          onPanEnd={handlePanEnd}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          style={{ touchAction: 'none' }}
         >
           {websites.map((site, index) => {
             let position = 'hidden';
