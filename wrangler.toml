@@ -4,5 +4,4 @@ compatibility_date = "2026-07-16"
 [build]
 command = "npm run build"
 
-# Optional: set the directory that contains package.json and source files
-# directory = "."
+ directory = "."
