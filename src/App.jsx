@@ -9,20 +9,16 @@ import './App.css'
 const websites = [
   {
     id: 1,
-    title: "EcoTech Innovators",
-    date: "March 15, 2024",
-    time: "10:00 AM EST",
-    location: "Green Valley",
-    link: "https://example.com/ecotech",
+    title: "Palmier Affaires",
+    date: "Juin 22, 2026",
+    link: "https://palmieraffaires.com",
     buttonText: "Visit Website"
   },
   {
     id: 2,
-    title: "Amber Fields Dashboard",
-    date: "June 22, 2024",
-    time: "2:00 PM EST",
-    location: "Global Remote",
-    link: "https://example.com/amberfields",
+    title: "Palmier Auto",
+    date: "October 13, 2025",
+    link: "https://palmierauto.xyz",
     buttonText: "Visit Website"
   },
   {
@@ -102,6 +98,7 @@ function App() {
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
+            zIndex:0
           }}
         >
           <ShaderGradient
@@ -146,6 +143,10 @@ function App() {
             wireframe={false}
           />
         </ShaderGradientCanvas>
+      </div>
+
+      <div className="title-section">
+        <h1>Palmier Group</h1>
       </div>
 
       <div className="carousel-wrapper">
