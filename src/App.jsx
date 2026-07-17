@@ -14,7 +14,7 @@ const websites = [
     date: "13 Octobre 2025",
     launchDate: "2025-10-13T00:00:00",
     status: "launched",
-    link: "https://palmierauto.example.com",
+    link: "https://palmierauto.xyz",
     buttonText: "Visiter le site",
     image: palmierAutoImg
   },
@@ -24,7 +24,17 @@ const websites = [
     date: "23 Juin 2026",
     launchDate: "2026-06-23T00:00:00",
     status: "launched",
-    link: "https://palmieraffaires.example.com",
+    link: "https://palmieraffaires.com",
+    buttonText: "Visiter le site",
+    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80"
+  },
+    {
+    id: 8,
+    title: "Palmier Gros",
+    date: "23 Juin 2026",
+    launchDate: "2026-06-23T00:00:00",
+    status: "launched",
+    link: "https://palmieraffaires.com/supplier-marketplace",
     buttonText: "Visiter le site",
     image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80"
   },
