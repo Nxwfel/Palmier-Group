@@ -25,7 +25,7 @@ const websites = [
     launchDate: "2026-06-23T00:00:00",
     status: "launched",
     link: "https://palmieraffaires.com/register",
-    buttonText: "Visiter le site",
+    buttonText: "Inscrivez vous",
     image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80"
   },
     {
