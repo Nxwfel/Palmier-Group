@@ -4,31 +4,34 @@ import * as reactSpring from '@react-spring/three'
 import * as drei from '@react-three/drei'
 import * as fiber from '@react-three/fiber'
 import { motion } from 'framer-motion'
+import palmierAutoImg from './assets/Palmier-Auto.jpg'
 import './App.css'
 
 const websites = [
   {
     id: 1,
     title: "Palmier Auto",
-    date: "October 13, 2025",
+    date: "13 Octobre 2025",
     launchDate: "2025-10-13T00:00:00",
     status: "launched",
-    link: "https://palmierauto.xyz",
-    buttonText: "Visit Website"
+    link: "https://palmierauto.example.com",
+    buttonText: "Visiter le site",
+    image: palmierAutoImg
   },
   {
     id: 2,
     title: "Palmier Affaires",
-    date: "June 23, 2026",
+    date: "23 Juin 2026",
     launchDate: "2026-06-23T00:00:00",
     status: "launched",
-    link: "https://palmieraffaires.com",
-    buttonText: "Visit Website"
+    link: "https://palmieraffaires.example.com",
+    buttonText: "Visiter le site",
+    image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=800&q=80"
   },
   {
     id: 3,
     title: "Palmier Loc",
-    date: "August 1, 2026",
+    date: "1er Août 2026",
     launchDate: "2026-08-01T00:00:00",
     status: "upcoming"
   },
@@ -39,7 +42,7 @@ const websites = [
   },
   {
     id: 5,
-    title: "Palmier Travel",
+    title: "Palmier Voyages",
     status: "tba"
   },
   {
@@ -49,14 +52,14 @@ const websites = [
   },
   {
     id: 7,
-    title: "PalmierFormation",
+    title: "Palmier Formation",
     status: "tba"
   }
 ];
 
 const Countdown = ({ targetDate }) => {
   const getTimeLeft = (dateStr) => {
-    const total = Date.parse(dateStr) - Date.parse(new Date());
+    const total = Date.parse(dateStr) - Date.now();
     if (total <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
     return {
       days: Math.floor(total / (1000 * 60 * 60 * 24)),
@@ -77,7 +80,7 @@ const Countdown = ({ targetDate }) => {
 
   return (
     <div className="countdown-timer">
-      <div className="time-block"><span>{timeLeft.days}</span><small>d</small></div>
+      <div className="time-block"><span>{timeLeft.days}</span><small>j</small></div>
       <div className="time-block"><span>{timeLeft.hours}</span><small>h</small></div>
       <div className="time-block"><span>{timeLeft.minutes}</span><small>m</small></div>
       <div className="time-block"><span>{timeLeft.seconds}</span><small>s</small></div>
@@ -218,7 +221,7 @@ function App() {
                       <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
                     </svg>
                   </div>
-                  <span>Website Project</span>
+                  <span>Projet Web</span>
                   {site.status === 'launched' && (
                     <a href={site.link} target="_blank" rel="noreferrer" className="external-link" onClick={(e) => e.stopPropagation()}>
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -228,10 +231,16 @@ function App() {
                   )}
                 </div>
 
-                <div className="card-image-placeholder">
-                   <div className="gradient-blob amber"></div>
-                   <div className="gradient-blob green"></div>
-                </div>
+                {site.image ? (
+                  <div className="card-image-container">
+                    <img src={site.image} alt={site.title} className="card-image" />
+                  </div>
+                ) : (
+                  <div className="card-image-placeholder">
+                     <div className="gradient-blob amber"></div>
+                     <div className="gradient-blob green"></div>
+                  </div>
+                )}
 
                 <div className="card-content">
                   <h2>{site.title}</h2>
@@ -244,7 +253,7 @@ function App() {
                     )}
                     <div className="detail-item status-badge">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                      {site.status === 'launched' ? 'Launched' : site.status === 'upcoming' ? 'Launching Soon' : 'To be announced'}
+                      {site.status === 'launched' ? 'Lancé' : site.status === 'upcoming' ? 'Lancement Prochain' : 'À venir'}
                     </div>
                   </div>
 
@@ -263,7 +272,7 @@ function App() {
                   )}
                   {site.status === 'tba' && (
                     <div className="tba-placeholder">
-                      <span>Coming Soon</span>
+                      <span>Bientôt Disponible</span>
                     </div>
                   )}
                 </div>
