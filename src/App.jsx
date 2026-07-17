@@ -98,22 +98,100 @@ const Countdown = ({ targetDate }) => {
   );
 };
 
+const ProjectCard = ({ site, position = 'center', onClick, className = '', isMain = false }) => {
+  const themeClass = site.status === 'launched' ? 'theme-white' : site.status === 'tba' ? 'theme-bw' : 'theme-upcoming';
+  
+  return (
+    <motion.div
+      className={`card ${position} ${themeClass} ${className} ${isMain ? 'main-card-item' : ''}`}
+      onClick={onClick}
+      whileTap={onClick ? { scale: 0.95 } : {}}
+      layoutId={`card-${site.id}`}
+    >
+      <div className="card-header">
+        <div className="header-icon">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 6h16v12H4z" opacity="0.2"/>
+            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
+          </svg>
+        </div>
+        <span>Projet Web</span>
+        {site.status === 'launched' && (
+          <a href={site.link} target="_blank" rel="noreferrer" className="external-link" onClick={(e) => e.stopPropagation()}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        )}
+      </div>
+
+      {site.image ? (
+        <div className="card-image-container">
+          <img src={site.image} alt={site.title} className="card-image" />
+        </div>
+      ) : (
+        <div className="card-image-placeholder">
+           <div className="gradient-blob amber"></div>
+           <div className="gradient-blob green"></div>
+        </div>
+      )}
+
+      <div className="card-content">
+        <h2>{site.title}</h2>
+        <div className="details">
+          {site.date && (
+            <div className="detail-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              {site.date}
+            </div>
+          )}
+          <div className="detail-item status-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            {site.status === 'launched' ? 'Lancé' : site.status === 'upcoming' ? 'Lancement Prochain' : 'À venir'}
+          </div>
+        </div>
+
+        {site.status === 'launched' && (
+          <a href={site.link} target="_blank" rel="noreferrer" className="action-btn" onClick={(e) => e.stopPropagation()}>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+            </svg>
+            {site.buttonText}
+          </a>
+        )}
+        {site.status === 'upcoming' && (
+          <div className="countdown-container">
+            <Countdown targetDate={site.launchDate} />
+          </div>
+        )}
+        {site.status === 'tba' && (
+          <div className="tba-placeholder">
+            <span>Bientôt Disponible</span>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
 function App() {
+  const mainWebsite = websites.find(w => w.id === 2);
+  const carouselWebsites = websites.filter(w => w.id !== 2);
+
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   const nextSlide = () => {
-    setActiveIndex((prev) => (prev + 1) % websites.length);
+    setActiveIndex((prev) => (prev + 1) % carouselWebsites.length);
   };
 
   const prevSlide = () => {
-    setActiveIndex((prev) => (prev - 1 + websites.length) % websites.length);
+    setActiveIndex((prev) => (prev - 1 + carouselWebsites.length) % carouselWebsites.length);
   };
 
   const goToSlide = (index) => {
     setActiveIndex(index);
   };
-
-  const [isHovered, setIsHovered] = useState(false);
 
   // Auto-play interval
   useEffect(() => {
@@ -125,7 +203,6 @@ function App() {
   }, [activeIndex, isHovered]);
 
   const handlePanEnd = (event, info) => {
-    // Detect swipe left or right
     const swipeThreshold = 50;
     if (info.offset.x < -swipeThreshold) {
       nextSlide();
@@ -135,7 +212,7 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container split-layout">
       <div className="background-effects">
         <ShaderGradientCanvas
           importedFiber={{ ...fiber, ...drei, ...reactSpring }}
@@ -146,7 +223,7 @@ function App() {
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
-            zIndex:0
+            zIndex: 0
           }}
         >
           <ShaderGradient
@@ -193,103 +270,46 @@ function App() {
         </ShaderGradientCanvas>
       </div>
 
-      <div className="title-section">
-        <h1>Palmier Group</h1>
+      <div className="main-content-area">
+        <div className="title-section-modern">
+          <h1>Palmier Group</h1>
+        </div>
+
+        <div className="main-card-wrapper">
+          <ProjectCard site={mainWebsite} isMain={true} />
+        </div>
       </div>
 
-      <div className="carousel-wrapper">
-        <motion.div 
-          className="carousel"
-          onPanEnd={handlePanEnd}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          style={{ touchAction: 'none' }}
-        >
-          {websites.map((site, index) => {
-            let position = 'hidden';
-            if (index === activeIndex) {
-              position = 'center';
-            } else if (index === (activeIndex - 1 + websites.length) % websites.length) {
-              position = 'left';
-            } else if (index === (activeIndex + 1) % websites.length) {
-              position = 'right';
-            }
+      <div className="bottom-carousel-area">
+        <div className="carousel-wrapper small-carousel">
+          <motion.div 
+            className="carousel"
+            onPanEnd={handlePanEnd}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            style={{ touchAction: 'none' }}
+          >
+            {carouselWebsites.map((site, index) => {
+              let position = 'hidden';
+              if (index === activeIndex) {
+                position = 'center';
+              } else if (index === (activeIndex - 1 + carouselWebsites.length) % carouselWebsites.length) {
+                position = 'left';
+              } else if (index === (activeIndex + 1) % carouselWebsites.length) {
+                position = 'right';
+              }
 
-            const themeClass = site.status === 'launched' ? 'theme-white' : site.status === 'tba' ? 'theme-bw' : 'theme-upcoming';
-
-            return (
-              <motion.div
-                key={site.id}
-                className={`card ${position} ${themeClass}`}
-                onClick={() => goToSlide(index)}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div className="card-header">
-                  <div className="header-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M4 6h16v12H4z" opacity="0.2"/>
-                      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM9 17H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z"/>
-                    </svg>
-                  </div>
-                  <span>Projet Web</span>
-                  {site.status === 'launched' && (
-                    <a href={site.link} target="_blank" rel="noreferrer" className="external-link" onClick={(e) => e.stopPropagation()}>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </a>
-                  )}
-                </div>
-
-                {site.image ? (
-                  <div className="card-image-container">
-                    <img src={site.image} alt={site.title} className="card-image" />
-                  </div>
-                ) : (
-                  <div className="card-image-placeholder">
-                     <div className="gradient-blob amber"></div>
-                     <div className="gradient-blob green"></div>
-                  </div>
-                )}
-
-                <div className="card-content">
-                  <h2>{site.title}</h2>
-                  <div className="details">
-                    {site.date && (
-                      <div className="detail-item">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                        {site.date}
-                      </div>
-                    )}
-                    <div className="detail-item status-badge">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                      {site.status === 'launched' ? 'Lancé' : site.status === 'upcoming' ? 'Lancement Prochain' : 'À venir'}
-                    </div>
-                  </div>
-
-                  {site.status === 'launched' && (
-                    <a href={site.link} target="_blank" rel="noreferrer" className="action-btn" onClick={(e) => e.stopPropagation()}>
-                      <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-                      </svg>
-                      {site.buttonText}
-                    </a>
-                  )}
-                  {site.status === 'upcoming' && (
-                    <div className="countdown-container">
-                      <Countdown targetDate={site.launchDate} />
-                    </div>
-                  )}
-                  {site.status === 'tba' && (
-                    <div className="tba-placeholder">
-                      <span>Bientôt Disponible</span>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+              return (
+                <ProjectCard 
+                  key={site.id} 
+                  site={site} 
+                  position={position} 
+                  onClick={() => goToSlide(index)} 
+                />
+              );
+            })}
+          </motion.div>
+        </div>
       </div>
     </div>
   )
