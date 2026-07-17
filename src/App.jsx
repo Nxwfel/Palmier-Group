@@ -42,7 +42,7 @@ const websites = [
   },
   {
     id: 5,
-    title: "Palmier Voyages",
+    title: "Palmier Travel",
     status: "tba"
   },
   {
