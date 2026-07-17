@@ -13,7 +13,7 @@ const websites = [
     date: "October 13, 2025",
     launchDate: "2025-10-13T00:00:00",
     status: "launched",
-    link: "https://palmierauto.example.com",
+    link: "https://palmierauto.xyz",
     buttonText: "Visit Website"
   },
   {
@@ -22,7 +22,7 @@ const websites = [
     date: "June 23, 2026",
     launchDate: "2026-06-23T00:00:00",
     status: "launched",
-    link: "https://palmieraffaires.example.com",
+    link: "https://palmieraffaires.com",
     buttonText: "Visit Website"
   },
   {
